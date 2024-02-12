@@ -28,6 +28,13 @@ export function requestListener(req: IncomingMessage, res: ServerResponse) {
           }
           break;
         case 'POST':
+          if (id) {
+            res.writeHead(404);
+            res.end(JSON.stringify({ message: 'Not Found' }));
+          } else {
+            res.writeHead(200);
+            // res.end(JSON.stringify(user));
+          }
           break;
         case 'PUT':
           break;
