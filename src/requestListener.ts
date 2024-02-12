@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from 'node:http';
 import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 
 export function requestListener(req: IncomingMessage, res: ServerResponse) {
-  const [api, users, id, ...rest] = req.url.split('/').filter(Boolean);
+  const [api, users, id, ...rest] = req.url!.split('/').filter(Boolean);
   res.setHeader('Content-Type', 'application/json');
   if (api === 'api' && users === 'users' && rest.length === 0) {
     try {
@@ -23,8 +23,8 @@ export function requestListener(req: IncomingMessage, res: ServerResponse) {
           //     res.end(JSON.stringify({ message: 'Invalid userId' }));
           //   }
           } else {
-            res.writeHead(200);
-            res.end(JSON.stringify(users));
+            // res.writeHead(200);
+            // res.end(JSON.stringify(users));
           }
           break;
         case 'POST':
@@ -34,14 +34,15 @@ export function requestListener(req: IncomingMessage, res: ServerResponse) {
         case 'DELETE':
           break;
         default:
+          res.writeHead(405);
+          res.end(JSON.stringify({ message: 'Method Not Allowed' }));
       }
-    } catch {
-
+    } catch (error) {
+      res.writeHead(500);
+      res.end(JSON.stringify({ message: 'Internal Server Error' }));
     }
+  } else {
+    res.writeHead(404);
+    res.end(JSON.stringify({ message: 'Not Found' }));
   }
-
-  res.writeHead(200);
-  res.end(JSON.stringify({
-    data: 'Hello World!',
-  }));
 }
