@@ -25,6 +25,12 @@ class User {
     data[index] = { id, ...user };
     return data[index] as Required<IUser>;
   }
+
+  delete(id: string): Required<IUser> {
+    const index = data.findIndex((user) => user.id === id);
+    const [deletedUser] = data.splice(index, 1);
+    return deletedUser as Required<IUser>;
+  }
 }
 
 export const user = new User();

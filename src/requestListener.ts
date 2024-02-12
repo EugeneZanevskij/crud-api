@@ -33,8 +33,7 @@ export function requestListener(req: IncomingMessage, res: ServerResponse) {
           break;
         case 'DELETE':
           if (id) {
-            res.writeHead(200);
-            // res.end(JSON.stringify());
+            controller.deleteUser(res, id);
           } else {
             res.writeHead(404);
             res.end(JSON.stringify({ message: 'Not Found' }));

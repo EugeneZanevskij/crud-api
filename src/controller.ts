@@ -63,6 +63,20 @@ class Controller {
       response.end(JSON.stringify({ code: 500, message: 'Server error' }));
     }
   }
+
+  deleteUser(response: ServerResponse, id: string) {
+    try {
+      const isId = isIdValid(response, id);
+      if (isId) {
+        const deletedUser = user.delete(id);
+        response.writeHead(204, { 'Content-Type': 'application/json' });
+        response.end(JSON.stringify(deletedUser));
+      }
+    } catch {
+      response.writeHead(500, { 'Content-Type': 'application/json' });
+      response.end(JSON.stringify({ code: 500, message: 'Server error' }));
+    }
+  }
 }
 
 export const controller = new Controller();
