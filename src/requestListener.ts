@@ -1,5 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
+import { controller } from './controller';
 
 export function requestListener(req: IncomingMessage, res: ServerResponse) {
   const [api, users, id, ...rest] = req.url!.split('/').filter(Boolean);
@@ -9,22 +10,9 @@ export function requestListener(req: IncomingMessage, res: ServerResponse) {
       switch (req.method) {
         case 'GET':
           if (id) {
-          //   if (uuidValidate(id)) {
-          //     const user = users.find((u) => u.id === id);
-          //     if (user) {
-          //       res.writeHead(200);
-          //       res.end(JSON.stringify(user));
-          //     } else {
-          //       res.writeHead(404);
-          //       res.end(JSON.stringify({ message: 'User not found' }));
-          //     }
-          //   } else {
-          //     res.writeHead(400);
-          //     res.end(JSON.stringify({ message: 'Invalid userId' }));
-          //   }
+          controller.getUser(res, id);
           } else {
-            // res.writeHead(200);
-            // res.end(JSON.stringify(users));
+            controller.getAll(res);
           }
           break;
         case 'POST':
@@ -32,8 +20,7 @@ export function requestListener(req: IncomingMessage, res: ServerResponse) {
             res.writeHead(404);
             res.end(JSON.stringify({ message: 'Not Found' }));
           } else {
-            res.writeHead(200);
-            // res.end(JSON.stringify(user));
+            controller.create(req, res);
           }
           break;
         case 'PUT':

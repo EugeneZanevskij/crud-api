@@ -2,6 +2,7 @@ import { IncomingMessage, ServerResponse } from 'node:http';
 import { user } from './user/user';
 import { getBody } from './helpers/getBody';
 import { isBodyRequired } from './helpers/isBodyRequired';
+import { isIdValid } from './helpers/isIdValid';
 
 class Controller {
   getAll(response: ServerResponse) {
@@ -28,6 +29,20 @@ class Controller {
     } catch {
       response.writeHead(500, { 'Content-Type': 'application/json' });
       response.end(JSON.stringify({ code: 500, message: 'Server error' }));
+    }
+  }
+
+  getUser(response: ServerResponse, id: string) {
+    try {
+      const isId = isIdValid(response, id);
+      if (isId) {
+        const userFound = user.findUserById(id);
+        response.writeHead(200, { 'Content-Type': 'application/json' });
+        response.end(JSON.stringify(userFound));
+      }
+    } catch {
+      response.writeHead(500, { 'Content-Type': 'application/json' });
+      response.end(JSON.stringify({ code: 500, message: "Server error" }));
     }
   }
 }
