@@ -37,8 +37,22 @@ export function requestListener(req: IncomingMessage, res: ServerResponse) {
           }
           break;
         case 'PUT':
+          if (id) {
+            res.writeHead(200);
+            // res.end(JSON.stringify());
+          } else {
+            res.writeHead(404);
+            res.end(JSON.stringify({ message: 'Not Found' }));
+          }
           break;
         case 'DELETE':
+          if (id) {
+            res.writeHead(200);
+            // res.end(JSON.stringify());
+          } else {
+            res.writeHead(404);
+            res.end(JSON.stringify({ message: 'Not Found' }));
+          }
           break;
         default:
           res.writeHead(405);
