@@ -14,6 +14,11 @@ class User {
   getAll(): Required<IUser>[] {
     return data;
   }
+
+  findUserById(id: string): Required<IUser> {
+    const user = data.find((user) => user.id === id);
+    return user as Required<IUser>;
+  }
 }
 
 export const user = new User();
