@@ -19,6 +19,12 @@ class User {
     const user = data.find((user) => user.id === id);
     return user as Required<IUser>;
   }
+
+  update(id: string, user: IUser): Required<IUser> {
+    const index = data.findIndex((user) => user.id === id);
+    data[index] = { id, ...user };
+    return data[index] as Required<IUser>;
+  }
 }
 
 export const user = new User();

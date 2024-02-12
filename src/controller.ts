@@ -45,6 +45,24 @@ class Controller {
       response.end(JSON.stringify({ code: 500, message: "Server error" }));
     }
   }
+
+  async updateUser(request: IncomingMessage, response: ServerResponse, id: string) {
+    try {
+      const isId = isIdValid(response, id);
+      if (isId) {
+        const body = await getBody(request, response);
+        const isBodyValid = isBodyRequired(response, body);
+        if (isBodyValid) {
+          const updatedUser = user.update(id, body);
+          response.writeHead(200, { 'Content-Type': 'application/json' });
+          response.end(JSON.stringify(updatedUser));
+        }
+      }
+    } catch {
+      response.writeHead(500, { 'Content-Type': 'application/json' });
+      response.end(JSON.stringify({ code: 500, message: 'Server error' }));
+    }
+  }
 }
 
 export const controller = new Controller();

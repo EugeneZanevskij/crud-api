@@ -25,8 +25,7 @@ export function requestListener(req: IncomingMessage, res: ServerResponse) {
           break;
         case 'PUT':
           if (id) {
-            res.writeHead(200);
-            // res.end(JSON.stringify());
+            controller.updateUser(req, res, id);
           } else {
             res.writeHead(404);
             res.end(JSON.stringify({ message: 'Not Found' }));
